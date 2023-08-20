@@ -1,18 +1,25 @@
-git config git-ftp.url "ftp://ftpupload.net/htdocs/github"
-git config git-ftp.user "thsi_34821928"
-git config git-ftp.password "79CKbasT"
-
-# Upload all files
-git ftp init
-
-# Or if the files are already there
-git ftp catchup
-
-# Work and deploy
-echo "new content" >> index.txt
-git commit index.txt -m "Add new content"
-git ftp push
-# 1 file to sync:
-# [1 of 1] Buffered for upload 'index.txt'.
-# Uploading ...
-# Last deployment changed to ded01b27e5c785fb251150805308d3d0f8117387.
+ on: 
+      push:
+        branches:
+          - master
+    name: 🚀 Deploy website on push
+    jobs:
+      ftp-web-deploy:
+        name: 🎉 Deploy
+        runs-on: ubuntu-latest
+        defaults:
+          run:
+            working-directory: ./public
+        steps:
+        - name: 🚚 Get latest code
+          uses: actions/checkout@v2.4.0
+          working-directory: ./public
+          with: 
+            fetch-depth: 2
+        - name: 📂 Sync files
+          uses: SamKirkland/FTP-Deploy-Action@4.2.0
+          with:
+            server: ftpupload.net
+            username: thsi_34821928
+            password: ${{ secrets.FTP_PASSWORD }}
+            server-dir: htdocs/
