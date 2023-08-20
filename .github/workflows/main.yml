@@ -9,11 +9,9 @@
         runs-on: ubuntu-latest
         defaults:
           run:
-            working-directory: ./public
         steps:
         - name: 🚚 Get latest code
           uses: actions/checkout@v2.4.0
-          working-directory: ./public
           with: 
             fetch-depth: 2
         - name: 📂 Sync files
