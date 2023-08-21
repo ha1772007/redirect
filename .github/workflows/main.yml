@@ -1,23 +1,18 @@
- on: 
-      push:
-        branches:
-          - master
-    name: 🚀 Deploy website on push
-    jobs:
-      ftp-web-deploy:
-        name: 🎉 Deploy
-        runs-on: ubuntu-latest
-        defaults:
-          run:
-        steps:
-        - name: 🚚 Get latest code
-          uses: actions/checkout@v2.4.0
-          with: 
-            fetch-depth: 2
-        - name: 📂 Sync files
-          uses: SamKirkland/FTP-Deploy-Action@4.2.0
-          with:
-            server: ftpupload.net
-            username: thsi_34821928
-            password: ${{ secrets.FTP_PASSWORD }}
-            server-dir: htdocs/
+on: push
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v3
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ftpupload.net
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp
+        server-dir: public_html/test-push-ftp/
